@@ -1,0 +1,31 @@
+.opAnimation{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.opAnimationText {
+    font-size: 3rem;
+    position: relative;
+    display: inline-block;
+}
+
+.opAnimationText span {
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+#mainContents{
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
