@@ -5,7 +5,7 @@ setTimeout(() => {
 
 const text = "Do you love?\nLove UnOffical Site";
 const opAnimationText = document.getElementById("opAnimationText");
-const lines = text.split('\n'); // 改行で分ける
+const lines = text.split('\n');
 lines.forEach(line => {
     const lineElement = document.createElement('div');
     opAnimationText.appendChild(lineElement);
