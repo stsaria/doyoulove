@@ -48,11 +48,11 @@ def control():
         if mode == "1":
             qBlog.deleteFromIp(input("authorIp:"))
         elif mode == "2":
-            print(qBLog.getAll())
+            print(qBlog.getAll())
         elif mode == "3":
-            print(qBLog.getFromIp(input("authorIp:")))
+            print(qBlog.getFromIp(input("authorIp:")))
         elif mode == "4":
-            print(qBLog.getFromId(input("authorId:")))
+            print(qBlog.getFromId(input("authorId:")))
         elif mode == "5":
             qBLog.deleteAll()
         elif mode == "6":
