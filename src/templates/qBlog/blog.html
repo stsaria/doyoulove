@@ -1,0 +1,17 @@
+{% extends "qBlog/base.html" %}
+{% block title %}
+<title>QBlog - {{ title }}</title>
+{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <h2>{{ title }} - {{ articleId }}</h2>
+    <h4>{{ subTitle }}</h4>
+    <hr>
+    <div class="container mt-3" id="content">
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+    document.getElementById("content").innerHTML = marked.parse(`{{ content }}`);
+</script>
+{% endblock %}

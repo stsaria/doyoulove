@@ -1,0 +1,47 @@
+{% extends "qBlog/base.html" %}
+{% block title %}
+<title>QBlog - New article</title>
+{% endblock %}
+{% block addHead %}
+<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+{% endblock%}
+{% block addBody %}
+<div class="opAnimation">
+    <div class="opAnimationText" id="opAnimationText"></div>
+</div>
+{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <h2>記事作成</h2>
+    {% if err %}
+    <p class="text-danger">{{ err| safe }}</p>
+    {% endif%}
+    <hr>
+    <h3>必須</h3>
+    <ul>
+        <li>タイトル:5~14文字</li>
+        <li>サブタイトル（概要など）:なし~20文字</li>
+        <li>内容:30~5000文字</li>
+    </ul>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="title" class="form-label">タイトル</label>
+            <input type="text" class="form-control" id="subTitle" name="title" minlength="5" maxlength="14" value="{{ title }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="subTitle" class="form-label">サブタイトル</label>
+            <input type="text" class="form-control" id="subTitle" name="subTitle" maxlength="20" value="{{ subTitle }}">
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label">内容</label>
+            <textarea id="content" name="content" id="content" required>{{ content }}</textarea>
+        </div>
+        <input class="btn btn-outline-primary" type="submit" name="submit" value="投稿">
+    </form>
+</div>
+<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+<script>
+    const easyMDE = new EasyMDE({element: document.getElementById("content")});
+    document.getElementById("content").value = content;
+</script>
+{% endblock %}
