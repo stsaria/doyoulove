@@ -1,4 +1,4 @@
-import threading, hashlib, os
+import threading, hashlib, time, os
 from flask import Flask, render_template, request, redirect, url_for
 
 os.makedirs("dbs", exist_ok=True)
