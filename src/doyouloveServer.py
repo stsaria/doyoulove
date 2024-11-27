@@ -22,6 +22,7 @@ class Web:
     @app.route("/qBlog/")
     def qBlogIndex():
         blogs = [{"id":blog[0], "title":blog[1], "subTitle":blog[2], "ip":blog[4]} for blog in qBlog.getAll()]
+        blogs.reverse()
         return render_template("qBlog/index.html", blogs=blogs)
     @app.route("/qBlog/blog")
     def qBlogViewer():
