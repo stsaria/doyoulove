@@ -20,10 +20,10 @@ class QBlog:
         self.conn.commit()
         return articleId
     
-    def getFromId(self, articleId:str):
+    def deleteFromId(self, articleId:str):
         self.cursor.execute("DELETE FROM blogs WHERE id=?",(articleId,))
         self.conn.commit()
-    def getFromIp(self, authorIp:str):
+    def deleteFromIp(self, authorIp:str):
         self.cursor.execute("DELETE FROM blogs WHERE ip=?",(authorIp,))
         self.conn.commit()
     def deleteAll(self):
