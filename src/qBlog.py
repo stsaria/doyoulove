@@ -41,7 +41,7 @@ class QBlog:
         return self.cursor.fetchall()
 
 def control():
-    qBLog = QBlog()
+    qBlog = QBlog()
     while True:
         print("deleteFromIp:1, getAll:2, getFromIp:3, getFromId:4, deleteAll:5, deleteFromId:6, exit:7")
         mode = input("input mode:")
