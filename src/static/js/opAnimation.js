@@ -3,7 +3,7 @@ setTimeout(() => {
     normalContents.style.opacity = 1;
 }, 4000);
 
-const text = "Do you love?\nLove UnOffical Site";
+const text = "Do you love?\nOffical Site";
 const opAnimationText = document.getElementById("opAnimationText");
 const lines = text.split('\n');
 lines.forEach(line => {
