@@ -55,12 +55,6 @@ class Web:
     def runWeb(self):
         self.app.run(self.host, self.port)
 
-def scheduleDeletionOneWeek():
-    while True:
-        time.sleep(60*60*24*7)
-        qBlog.deleteAll()
-
 if __name__ == "__main__":
-    threading.Thread(target=scheduleDeletionOneWeek, daemon=True).start()
     web = Web()
     web.runWeb()
