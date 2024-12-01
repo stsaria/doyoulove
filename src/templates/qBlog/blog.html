@@ -4,8 +4,8 @@
 {% endblock %}
 {% block body %}
 <div class="container-fluid">
-    <h2>{{ title }} - {{ articleId }}</h2>
-    <h4>{{ subTitle }}</h4>
+    <h3>{{ title }} - {{ articleIp }}</h3>
+    <h5>{{ subTitle }}<button class="btn btn-outline-primary ms-5" id="goodButton" onclick="fetch('good?id={{ articleId }}');document.getElementById('goodButton').innerHTML='Goodしました！';">この記事をGood!</button></h5>
     <hr>
     <div class="container mt-3" id="content">
     </div>

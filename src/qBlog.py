@@ -13,32 +13,49 @@ class QBlog:
                 ip TEXT NOT NULL
             )
         """)
+        self.cursor.execute("""
+            CREATE TABLE IF NOT EXISTS goods(
+                id TEXT PRIMARY KEY,
+                articleId TEXT NOT NULL,
+                ip TEXT NOT NULL
+            )
+        """)
         self.conn.commit()
-    def new(self, title:str, subTitle:str, contnet:str, ip:str):
+    def newArticle(self, title:str, subTitle:str, contnet:str, ip:str):
         articleId = str(uuid.uuid4())
         self.cursor.execute("INSERT INTO blogs (id, title, subTitle, content, ip) VALUES (?, ?, ?, ?, ?)",(articleId, title, subTitle, contnet, ip))
         self.conn.commit()
         return articleId
     
-    def deleteFromId(self, articleId:str):
+    def deleteArticleFromId(self, articleId:str):
         self.cursor.execute("DELETE FROM blogs WHERE id=?",(articleId,))
         self.conn.commit()
-    def deleteFromIp(self, authorIp:str):
+    def deleteArticleFromIp(self, authorIp:str):
         self.cursor.execute("DELETE FROM blogs WHERE ip=?",(authorIp,))
         self.conn.commit()
-    def deleteAll(self):
+    def deleteArticleAll(self):
         self.cursor.execute("DELETE FROM blogs")
         self.conn.commit()
     
-    def getFromId(self, articleId:str):
+    def getArticleFromId(self, articleId:str):
         self.cursor.execute("SELECT * FROM blogs WHERE id=?",(articleId,))
         return self.cursor.fetchone()
-    def getFromIp(self, authorIp:str):
+    def getArticleFromIp(self, authorIp:str):
         self.cursor.execute("SELECT * FROM blogs WHERE ip=?",(authorIp,))
         return self.cursor.fetchall()
-    def getAll(self):
+    def getArticleAll(self):
         self.cursor.execute("SELECT * FROM blogs")
         return self.cursor.fetchall()
+    
+    def newGood(self, articleId:str, ip:str):
+        self.cursor.execute("INSERT INTO goods (id, articleId, ip) VALUES (?, ?, ?)",(str(uuid.uuid4()), articleId, ip))
+        self.conn.commit()
+    def getGoodAll(self):
+        self.cursor.execute("SELECT * FROM goods")
+        return self.cursor.fetchall()
+    def getGoodArticleIdAndIp(self, articleId:str, ip:str):
+        self.cursor.execute("SELECT * FROM goods WHERE articleId=? AND ip=?",(articleId, ip))
+        return self.cursor.fetchone()
 
 def control():
     qBlog = QBlog()
@@ -46,17 +63,17 @@ def control():
         print("deleteFromIp:1, getAll:2, getFromIp:3, getFromId:4, deleteAll:5, deleteFromId:6, exit:7")
         mode = input("input mode:")
         if mode == "1":
-            qBlog.deleteFromIp(input("authorIp:"))
+            qBlog.deleteArticleFromIp(input("authorIp:"))
         elif mode == "2":
-            print(qBlog.getAll())
+            print(qBlog.getArticleAll())
         elif mode == "3":
-            print(qBlog.getFromIp(input("authorIp:")))
+            print(qBlog.getArticleFromIp(input("authorIp:")))
         elif mode == "4":
-            print(qBlog.getFromId(input("authorId:")))
+            print(qBlog.getArticleFromId(input("authorId:")))
         elif mode == "5":
             qBLog.deleteAll()
         elif mode == "6":
-            qBlog.deleteFromId(input("authorId:"))
+            qBlog.deleteArticleFromId(input("authorId:"))
         elif mode == "7":
             sys.exit()
         print("end")

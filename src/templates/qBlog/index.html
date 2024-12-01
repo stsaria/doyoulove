@@ -11,14 +11,15 @@
     <hr>
     <h3>Blogs</h3>
     <div class="container mt-5">
+        <div class="text-end mb-3">ソート : <a href="?s=0">Goodが多い順</a> <a href="?s=1">新しい順</a> <a href="?s=2">古い順</a> <a href="?s=3">Goodが少ない順</a></div>
         <div class="row">
-            {% for blog in blogs %}
+            {% for articleId, blog in blogs.items() %}
             <div class="col-md-3 mb-4">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">{{ blog.title }}</h4>
-                        <p class="card-text">{{ blog.subTitle }}</p>
-                        <button class="btn btn-outline-info" aria-current="page" onclick="window.location.href = 'blog?id={{ blog.id }}';">見る</button>
+                        <p class="card-text">{{ blog.subTitle }}<br>{{ blog.goods }}個のGood!</p>
+                        <button class="btn btn-outline-info" aria-current="page" onclick="window.location.href = 'blog?id={{ articleId }}';">見る</button>
                     </div>
                 </div>
             </div>
