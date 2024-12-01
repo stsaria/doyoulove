@@ -1,4 +1,4 @@
-import threading, hashlib, time, os
+import threading, hashlib, random, time, os
 from flask import Flask, render_template, request, redirect, url_for
 
 os.makedirs("dbs", exist_ok=True)
@@ -36,6 +36,8 @@ class Web:
             blogs = dict(reversed(list(blogs.items())))
         elif sortType == "3":
             blogs = dict(sorted(blogs.items(), key=lambda item: item[1]["goods"]))
+        elif sortType == "4":
+            random.shuffle(blogs)
         return render_template("qBlog/index.html", blogs=blogs)
     @app.route("/qBlog/blog")
     def qBlogViewer():
