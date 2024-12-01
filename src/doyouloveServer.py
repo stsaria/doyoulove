@@ -37,7 +37,7 @@ class Web:
         elif sortType == "3":
             blogs = dict(sorted(blogs.items(), key=lambda item: item[1]["goods"]))
         elif sortType == "4":
-            random.shuffle(blogs)
+            blogs = dict(random.sample(list(blogs.items()), len(list(blogs.items()))))
         return render_template("qBlog/index.html", blogs=blogs)
     @app.route("/qBlog/blog")
     def qBlogViewer():
