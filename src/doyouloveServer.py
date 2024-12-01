@@ -31,10 +31,12 @@ class Web:
                 continue
             blogs[good[1]]["goods"] += 1
         if sortType == "0":
+            blogs = dict(reversed(list(blogs.items())))
             blogs = dict(sorted(blogs.items(), key=lambda item: item[1]["goods"], reverse=True)) 
         elif sortType == "1":
             blogs = dict(reversed(list(blogs.items())))
         elif sortType == "3":
+            blogs = dict(reversed(list(blogs.items())))
             blogs = dict(sorted(blogs.items(), key=lambda item: item[1]["goods"]))
         elif sortType == "4":
             blogs = dict(random.sample(list(blogs.items()), len(list(blogs.items()))))
