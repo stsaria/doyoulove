@@ -31,11 +31,11 @@ class Web:
                 continue
             blogs[good[1]]["goods"] += 1
         if sortType == "0":
-            blogs = dict(sorted(blogs.items(), key=lambda item: item[0][3])) 
+            blogs = dict(sorted(blogs.items(), key=lambda item: item[1]["goods"], reverse=True)) 
         elif sortType == "1":
             blogs = dict(reversed(list(blogs.items())))
         elif sortType == "3":
-            blogs = dict(reversed(list(sorted(blogs.items(), key=lambda item: item[0][3]))))
+            blogs = dict(sorted(blogs.items(), key=lambda item: item[1]["goods"]))
         return render_template("qBlog/index.html", blogs=blogs)
     @app.route("/qBlog/blog")
     def qBlogViewer():
