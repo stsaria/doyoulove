@@ -56,11 +56,11 @@ class Web:
         elif request.method == "POST":
             title = request.form.get("title")
             subTitle = request.form.get("subTitle")
-            content = request.form.get("content")
+            content = request.form.get("content", "")
             banIpsF = open("BANIPs", encoding="utf-8")
             banIps = banIpsF.read().split("\n")
             banIpsF.close()
-            if not (title and subTitle and content):
+            if not (title and subTitle):
                 return "fuck pram", 400
             elif not (5<=len(title)<=14 and 0<=len(subTitle)<=20 and 30<=len(content)<=5000):
                 return render_template("qBlog/new.html", err=f"条件にクリアしていません<br>タイトル:{len(title)}文字<br>サブタイトル:{len(subTitle)}文字<br>内容:{len(content)}文字", title=title, subTitle=subTitle, content=content)
