@@ -42,9 +42,10 @@ class Web:
         articleId = request.args.get("id")
         if not articleId:
             return redirect("qBlog")
-        articleId, title, subTitle, content, authorIp = qBlog.getArticleFromId(articleId)
-        if None in [articleId, title, subTitle, content, authorIp]:
+        article = qBlog.getArticleFromId(articleId)
+        if not article:
             return redirect("qBlog")
+        articleId, title, subTitle, content, authorIp = article
         return render_template("qBlog/blog.html", articleId=articleId, title=title, subTitle=subTitle, content=content, articleIp=hashlib.md5(authorIp.encode()).hexdigest()[:8])
     @app.route("/qBlog/new", methods=["GET", "POST"])
     def qBlogNew():

@@ -69,11 +69,11 @@ def control():
         elif mode == "3":
             print(qBlog.getArticleFromIp(input("authorIp:")))
         elif mode == "4":
-            print(qBlog.getArticleFromId(input("authorId:")))
+            print(qBlog.getArticleFromId(input("articleId:")))
         elif mode == "5":
             qBLog.deleteAll()
         elif mode == "6":
-            qBlog.deleteArticleFromId(input("authorId:"))
+            qBlog.deleteArticleFromId(input("articleId:"))
         elif mode == "7":
             sys.exit()
         print("end")
