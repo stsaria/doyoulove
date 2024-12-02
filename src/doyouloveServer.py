@@ -18,7 +18,11 @@ def getJpCidrs():
             continue
         parts = cidr.split('|')
         if parts[1] == "JP" and parts[2] in ["ipv4", "ipv6"]:
-            jpCidrs.append(f"{parts[3]}/{parts[4]}")
+            subnet = int()
+            bitsNeeded = int(parts[4]).bit_length()
+            prefixLen = 32 - bitsNeeded
+            jpCidrs.append(f"{parts[3]}/{prefixLen}")
+            print(f"{parts[3]}/{prefixLen}")
     return jpCidrs
 
 jpCidrs = getJpCidrs()
