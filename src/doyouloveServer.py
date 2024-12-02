@@ -1,5 +1,6 @@
-import threading, hashlib, random, time, os
+import threading, ipaddress, requests, hashlib, random, time, os
 from flask import Flask, render_template, request, redirect, url_for
+from concurrent.futures import ThreadPoolExecutor
 
 os.makedirs("dbs", exist_ok=True)
 
@@ -8,6 +9,30 @@ if not os.path.isfile("BANIPs"):
 
 from qBlog import QBlog
 qBlog = QBlog()
+
+def getJpCidrs():
+    cidrs = requests.get("http://ftp.apnic.net/stats/apnic/delegated-apnic-latest").text.splitlines()
+    def isJpCidr(cidr:str):
+        if cidr.startswith("#"):
+            return None
+        parts = cidr.split('|')
+        if parts[0] == "JP" and (parts[3] == "ipv4" or parts[3] == "ipv6"):
+            return parts[4]
+        return None
+    with ThreadPoolExecutor() as executor:
+        results = list(executor.map(isJpCidr, cidrs))
+    return [cidr for cidr in results if cidr is not None]
+
+jpCidrs = getJpCidrs()
+
+def isJpIp(ip:str):
+    ipO = ipaddress.ip_address(ip)
+    if ipO.is_loopback:
+        return True
+    for jpCidr in jpCidrs:
+        if ipO in ipaddress.ip_network(jpCidr):
+            return True
+    return False
 
 class Web:
     app = Flask(import_name="NanceChat", template_folder="src/templates", static_folder="src/static")
@@ -59,6 +84,8 @@ class Web:
         if request.method == "GET":
             return render_template("qBlog/new.html", title=title, subTitle=subTitle, content=content)
         elif request.method == "POST":
+            if not isJpIp(request.remote_addr):
+                return "sry jp only", 403
             title = request.form.get("title")
             subTitle = request.form.get("subTitle")
             content = request.form.get("content", "")
@@ -76,8 +103,12 @@ class Web:
     @app.route("/qBlog/good")
     def qBlogGood():
         articleId = request.args.get("id")
-        if not articleId:
+        if not isJpIp(request.remote_addr):
+            return "sry jp only", 403
+        elif not articleId:
             return "fuck pram", 400
+        elif not qBlog.getArticleFromId(articleId):
+            return "Not found", 404
         elif qBlog.getGoodArticleIdAndIp(articleId, request.remote_addr):
             return "You have already registered good.", 403
         qBlog.newGood(articleId, request.remote_addr)
