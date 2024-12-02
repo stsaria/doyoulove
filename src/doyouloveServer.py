@@ -22,7 +22,6 @@ def getJpCidrs():
             bitsNeeded = int(parts[4]).bit_length()
             prefixLen = 32 - bitsNeeded
             jpCidrs.append(f"{parts[3]}/{prefixLen}")
-            print(f"{parts[3]}/{prefixLen}")
     return jpCidrs
 
 jpCidrs = getJpCidrs()
