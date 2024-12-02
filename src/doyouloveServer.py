@@ -31,7 +31,7 @@ def isJpIp(ip:str):
     if ipO.is_loopback:
         return True
     for jpCidr in jpCidrs:
-        if ipO in ipaddress.ip_network(jpCidr):
+        if ipO in ipaddress.ip_network(jpCidr, strict=False):
             return True
     return False
 
