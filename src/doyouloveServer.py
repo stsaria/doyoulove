@@ -18,7 +18,7 @@ def getJpCidrs():
             continue
         parts = cidr.split('|')
         if parts[1] == "JP" and parts[2] in ["ipv4", "ipv6"]:
-            jpCidrs.append(parts[3])
+            jpCidrs.append(f"{parts[3]}/{parts[4]}")
     return jpCidrs
 
 jpCidrs = getJpCidrs()
