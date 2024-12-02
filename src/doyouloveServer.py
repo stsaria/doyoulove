@@ -11,17 +11,15 @@ from qBlog import QBlog
 qBlog = QBlog()
 
 def getJpCidrs():
+    jpCidrs = []
     cidrs = requests.get("http://ftp.apnic.net/stats/apnic/delegated-apnic-latest").text.splitlines()
-    def isJpCidr(cidr:str):
+    for cidr in cidrs:
         if cidr.startswith("#"):
-            return None
+            continue
         parts = cidr.split('|')
-        if parts[0] == "JP" and (parts[3] == "ipv4" or parts[3] == "ipv6"):
-            return parts[4]
-        return None
-    with ThreadPoolExecutor() as executor:
-        results = list(executor.map(isJpCidr, cidrs))
-    return [cidr for cidr in results if cidr is not None]
+        if parts[1] == "JP" and parts[2] in ["ipv4", "ipv6"]:
+            jpCidrs.append(parts[3])
+    return jpCidrs
 
 jpCidrs = getJpCidrs()
 
