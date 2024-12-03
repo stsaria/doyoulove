@@ -12,6 +12,7 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
+    marked.setOptions({ breaks: true })
     document.getElementById("content").innerHTML = marked.parse(`{{ content }}`);
 </script>
 {% endblock %}
