@@ -8,6 +8,8 @@ if not os.path.isfile("BANIPs"):
     open("BANIPs", mode="w", encoding="utf-8").close()
 
 from qBlog import QBlog
+from chatButUnknow import ChatButUnknow
+chatButUnknow = ChatButUnknow()
 qBlog = QBlog()
 
 def getJpCidrs():
@@ -24,9 +26,17 @@ def getJpCidrs():
             jpCidrs.append(f"{parts[3]}/{prefixLen}")
     return jpCidrs
 
-jpCidrs = getJpCidrs()
+if os.path.isfile("jpCidrs"):
+    jpCidrsF = open("jpCidrs", encoding="utf-8")
+    jpCidrs = jpCidrsF.read().split("\n")
+    jpCidrsF.close()
+else:
+    jpCidrs = getJpCidrs()
+    jpCidrsF = open("jpCidrs", mode="w", encoding="utf-8")
+    jpCidrsF.write("\n".join(jpCidrs))
+    jpCidrsF.close()
 
-def isJpIp(ip:str):
+def isAllowIp(ip:str):
     ipO = ipaddress.ip_address(ip)
     if ipO.is_loopback:
         return True
@@ -36,22 +46,24 @@ def isJpIp(ip:str):
     return False
 
 class Web:
-    app = Flask(import_name="NanceChat", template_folder="src/templates", static_folder="src/static")
+    app = Flask(import_name="Do you love?", template_folder="src/templates", static_folder="src/static")
     app.config["TEMPLATES_AUTO_RELOAD"] = True
     cursor = None
     def __init__(self, host="0.0.0.0", port=80):
         self.host = host
         self.port = port
+    # main
     @app.route("/")
     def index():
         return render_template("main/index.html")
     @app.route("/valorant")
     def varorant():
         return render_template("main/valorant.html")
+    # qBlog
     @app.route("/qBlog/")
     def qBlogIndex():
         sortType = request.args.get("s", "0")
-        blogs = {blog[0]:{"title":blog[1], "subTitle":blog[2], "ip":blog[4], "goods":0} for blog in qBlog.getArticleAll()}
+        blogs = {blog[0]:{"title":blog[1], "subTitle":blog[2], "ip":hashlib.md5(blog[4].encode()).hexdigest()[:8], "goods":0} for blog in qBlog.getArticleAll()}
         for good in qBlog.getGoodAll():
             if not good[1] in list(blogs.keys()):
                 continue
@@ -76,7 +88,7 @@ class Web:
         if not article:
             return redirect(".")
         articleId, title, subTitle, content, authorIp = article
-        return render_template("qBlog/blog.html", articleId=articleId, title=title, subTitle=subTitle, content=content, articleIp=hashlib.md5(authorIp.encode()).hexdigest()[:8])
+        return render_template("qBlog/blog.html", articleId=articleId, title=title, subTitle=subTitle, content=content, authorIp=hashlib.md5(authorIp.encode()).hexdigest()[:8])
     @app.route("/qBlog/new", methods=["GET", "POST"])
     def qBlogNew():
         title = ""
@@ -85,17 +97,15 @@ class Web:
         if request.method == "GET":
             return render_template("qBlog/new.html", title=title, subTitle=subTitle, content=content)
         elif request.method == "POST":
-            if not isJpIp(request.remote_addr):
+            if not isAllowIp(request.remote_addr):
                 return "sry jp only", 403
-            title = request.form.get("title")
-            subTitle = request.form.get("subTitle")
+            title = request.form.get("title", "")
+            subTitle = request.form.get("subTitle", "")
             content = request.form.get("content", "")
             banIpsF = open("BANIPs", encoding="utf-8")
             banIps = banIpsF.read().split("\n")
             banIpsF.close()
-            if not (title and subTitle):
-                return "fuck pram", 400
-            elif not (5<=len(title)<=14 and 0<=len(subTitle)<=20 and 30<=len(content)<=5000):
+            if not (5<=len(title.strip())<=14 and 0<=len(subTitle.strip())<=20 and 30<=len(content.strip())<=5000):
                 return render_template("qBlog/new.html", err=f"条件にクリアしていません<br>タイトル:{len(title)}文字<br>サブタイトル:{len(subTitle)}文字<br>内容:{len(content)}文字", title=title, subTitle=subTitle, content=content)
             elif request.remote_addr in banIps or request.remote_addr in banIps:
                 return render_template("qBlog/new.html", err="あなたはBANされています。\nもし、間違えだと感じたら、Discordでお伝えください", title=title, subTitle=subTitle, content=content)
@@ -104,7 +114,7 @@ class Web:
     @app.route("/qBlog/good")
     def qBlogGood():
         articleId = request.args.get("id")
-        if not isJpIp(request.remote_addr):
+        if not isAllowIp(request.remote_addr):
             return "sry jp only", 403
         elif not articleId:
             return "fuck pram", 400
@@ -114,9 +124,29 @@ class Web:
             return "You have already registered good.", 403
         qBlog.newGood(articleId, request.remote_addr)
         return "", 200
+    # chatButUnknow
+    @app.route("/chatButUnknow/", methods=["GET", "POST"])
+    def chatButUnknowIndex():
+        messages = {message[0]:{"content":message[1], "authorIp":hashlib.md5(message[3].encode()).hexdigest()[:8]} for message in reversed(chatButUnknow.getMessageAll())}
+        return render_template("chatButUnknow/index.html", yourIp=hashlib.md5(request.remote_addr.encode()).hexdigest()[:8], messages=messages)
+    @app.route("/chatButUnknow/new", methods=["POST"])
+    def chatButUnknowNew():
+        content = request.form.get("content", "")
+        banIpsF = open("BANIPs", encoding="utf-8")
+        banIps = banIpsF.read().split("\n")
+        banIpsF.close()
+        if not isAllowIp(request.remote_addr):
+            return "sry jp only", 403
+        elif not 1 <= len(content.strip()) <= 220:
+            return "fuck pram", 400
+        elif request.remote_addr in banIps or request.remote_addr in banIps:
+            return "banned", 403
+        chatButUnknow.newMessage(content, request.remote_addr)
+        return redirect(url_for("chatButUnknowIndex", _method="GET"))
     def runWeb(self):
         self.app.run(self.host, self.port)
 
 if __name__ == "__main__":
+    threading.Thread(target=chatButUnknow.periodicDeletion, daemon=True)
     web = Web()
     web.runWeb()

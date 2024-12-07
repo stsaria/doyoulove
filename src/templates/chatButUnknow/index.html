@@ -1,0 +1,28 @@
+{% extends "chatButUnknow/base.html" %}
+{% block title %}
+<title>ChatButUnknow - Unknow string chat</title>
+{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <h2>You login <span class="text-danger">Chat but Unknow</span></h2>
+    <p>このチャットはあるメッセージを投稿すると、欠けて投稿されます。<br>
+    元の形を推測しながらチャットするという脳トレ？になるかも？<br>
+    メッセージは定期的に消されるような仕組みです。</p>
+    <hr>
+    <h3>Chat</h3>
+    <form method="post" action="new">
+        <div class="mb-3">
+            <label for="content" class="form-label">メッセージ</label>
+            <textarea class="form-control" id="content" name="content" placeholder="1~220文字" minlength="1" maxlength="220" rows="6" required></textarea>
+        </div>
+        <input class="btn btn-outline-primary" type="submit" name="submit" value="投稿">
+    </form>
+    <div class="container">
+        (Your id:{{ yourIp }})
+        {% for messageId, message in messages.items() %}
+        <h5>{{ message.authorIp }}</h5>
+        <p>{{ message.content }}</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

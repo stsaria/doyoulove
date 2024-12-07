@@ -1,7 +1,7 @@
 import sqlite3, uuid, sys
 
 class QBlog:
-    def __init__(self, dbFile="dbs/blogs.db"):
+    def __init__(self, dbFile="dbs/qBlog.db"):
         self.conn = sqlite3.connect(dbFile, check_same_thread=False)
         self.cursor = self.conn.cursor()
         self.cursor.execute("""
