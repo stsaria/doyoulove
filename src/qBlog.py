@@ -71,7 +71,7 @@ def control():
         elif mode == "4":
             print(qBlog.getArticleFromId(input("articleId:")))
         elif mode == "5":
-            qBLog.deleteAll()
+            qBLog.deleteArticleAll()
         elif mode == "6":
             qBlog.deleteArticleFromId(input("articleId:"))
         elif mode == "7":
