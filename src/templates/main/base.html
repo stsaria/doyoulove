@@ -15,8 +15,6 @@
         {% endblock %}
     </head>
     <body>
-        {% block addBody %}
-        {% endblock %}
         <div class="bg" id="mainContents">
             <nav class="navbar bg-body-tertiary mb-2">
                 <div class="container-fluid">
@@ -36,9 +34,37 @@
                     </ul>
                 </div>
             </nav>
-            {% block body %}
-            {% endblock %}
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col border border-start-0 border-top-0 border-bottom-0">
+                        <h4>リンク達</h4>
+                        <hr>
+                        <ul class="list-unstyled">
+                            <h5 class="mt-2">作ったやつ</h5>
+                            <li>
+                                <button class="btn btn-outline-info btn-lg" aria-current="page" onclick="window.location.href = 'qBlog/';">QBlog</button>
+                            </li>
+                            <li>
+                                <button class="btn btn-outline-info btn-lg" aria-current="page" onclick="window.location.href = 'chatButUnknow/';">Chat but Unknow</button>
+                            </li>
+                            <li>
+                                <button class="btn btn-outline-info btn-lg" aria-current="page" onclick="window.location.href = 'youCantStopSanpo/';">You cant stop Sanpo</button>
+                            </li>
+                            <h5 class="mt-2">部達</h5>
+                            <li>
+                                <button class="btn btn-outline-info btn-lg" aria-current="page" onclick="window.location.href = 'valorant';">Valorant</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-9">
+                        {% block body %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
         </div>
+        {% block addBody %}
+        {% endblock %}
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
         </div>
