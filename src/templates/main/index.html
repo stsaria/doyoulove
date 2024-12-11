@@ -5,14 +5,10 @@
 {% block addHead %}
 <link href="static/styles/opAnimation.css" rel="stylesheet" />
 {% endblock%}
-{% block addBody %}
+{% block addBodyS %}
 <div class="opAnimation">
     <div class="opAnimationText" id="opAnimationText"></div>
 </div>
-<script src="static/js/opAnimation.js"></script>
-<script>
-    animation("Do you love?\nstsaria's potal site");
-</script>
 {% endblock %}
 {% block body %}
 <h2>Welcome to "Do you love?"</h2>
@@ -26,4 +22,10 @@
 <p>まあ優斗なんですが、92歳の道民住みということになっています。<br>
 基本的にはよくプログラム書いている人で散歩部とValorant部をどっちも初心者として参加してマス！</p>
 <button class="btn btn-outline-primary mt-3" id="noopAnimation" onclick="localStorage.setItem('animation', 'noop'); document.getElementById('noopAnimation').innerHTML = '変更しました'">次からはアニメーションを利用しない</button>
+{% endblock %}
+{% block addBodyE %}
+<script src="static/js/opAnimation.js"></script>
+<script>
+    animation("Do you love?\nstsaria's potal site");
+</script>
 {% endblock %}

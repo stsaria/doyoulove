@@ -1,6 +1,6 @@
 function animation(message){
     const normalContents = document.getElementById("mainContents");
-    if (localStorage.getItem("animation") == "noop"){
+    if (localStorage.getItem("animation") === "noop"){
         normalContents.style.opacity = 1;
         return;
     }
