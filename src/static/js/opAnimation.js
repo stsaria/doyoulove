@@ -1,5 +1,9 @@
 function animation(message){
     const normalContents = document.getElementById("mainContents");
+    if (localStorage.getItem("animation") == "noop"){
+        normalContents.style.opacity = 1;
+        return;
+    }
     setTimeout(() => {
         normalContents.style.opacity = 1;
     }, 4000);

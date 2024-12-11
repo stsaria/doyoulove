@@ -1,6 +1,6 @@
 {% extends "main/base.html" %}
 {% block title %}
-<title>Do you love? - UnOffical Site</title>
+<title>Do you love? - Offical Site</title>
 {% endblock %}
 {% block addHead %}
 <link href="static/styles/opAnimation.css" rel="stylesheet" />
@@ -9,20 +9,21 @@
 <div class="opAnimation">
     <div class="opAnimationText" id="opAnimationText"></div>
 </div>
-{% endblock %}
-{% block body %}
-<div class="container-fluid">
-    <h2>Welcome to "Do you love?"</h2>
-    <p><img class="me-1" src="../static/img/valorant/yuto.webp" height="22.5px">優斗がてきとうに作ったDo you love?の公式サイト兼優斗のサイトです！<br>
-    あんまり機能はないけど、よかったら見に行ってね！<br>
-    あ、ちなみに出会い系サイトではないですよ（笑）</p>
-    <div style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%); ">
-        <button class="btn btn-outline-info btn-lg" aria-current="page" onclick="window.location.href = 'qBlog/';">QBlog</button>
-        <button class="btn btn-outline-info btn-lg" aria-current="page" onclick="window.location.href = 'chatButUnknow/';">ChatButUnknow</button>
-    </div>
-</div>
 <script src="static/js/opAnimation.js"></script>
 <script>
-    animation("Do you love?\nOffical Site");
+    animation("Do you love?\nstsaria's potal site");
 </script>
+{% endblock %}
+{% block body %}
+<h2>Welcome to "Do you love?"</h2>
+<p><img class="me-1" src="../static/img/valorant/yuto.webp" height="22.5px">優斗がてきとうに作ったDo you love?の公式サイト兼優斗のサイトです！<br>
+あんまり機能はないけど、よかったら見に行ってね！<br>
+あ、ちなみに出会い系サイトではないですよ（笑）</p>
+<h3>Do you love?とはなんすか？</h3>
+<p>謎の文ですけど、完全にラブ鯖を指しているわけではないです。<br>
+まあ、ラブ鯖であっちゃこっちゃいろいろあったので、ラブ鯖ライクな鯖を作ろう的な話になって作ったコミュニティですよ〜</p>
+<h3>優斗の自己紹介</h3>
+<p>まあ優斗なんですが、92歳の道民住みということになっています。<br>
+基本的にはよくプログラム書いている人で散歩部とValorant部をどっちも初心者として参加してマス！</p>
+<button class="btn btn-outline-primary mt-3" id="noopAnimation" onclick="localStorage.setItem('animation', 'noop'); document.getElementById('noopAnimation').innerHTML = '変更しました'">次からはアニメーションを利用しない</button>
 {% endblock %}

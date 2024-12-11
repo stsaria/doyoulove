@@ -1,4 +1,4 @@
-import threading, ipaddress, requests, hashlib, random, time, os
+import threading, ipaddress, requests, hashlib, random, time, sys, os
 from flask import Flask, render_template, request, redirect, url_for
 from concurrent.futures import ThreadPoolExecutor
 
@@ -47,7 +47,8 @@ def isAllowIp(ip:str):
 
 class Web:
     app = Flask(import_name="Do you love?", template_folder="src/templates", static_folder="src/static")
-    app.config["TEMPLATES_AUTO_RELOAD"] = True
+    if "debug" in sys.argv:
+        app.config["TEMPLATES_AUTO_RELOAD"] = True
     cursor = None
     def __init__(self, host="0.0.0.0", port=80):
         self.host = host
@@ -143,6 +144,10 @@ class Web:
             return "banned", 403
         chatButUnknow.newMessage(content, request.remote_addr)
         return redirect(url_for("chatButUnknowIndex", _method="GET"))
+    # youCantStopSanpo
+    @app.route("/youCantStopSanpo/")
+    def youCantStopSanpo():
+        return render_template("youCantStopSanpo/index.html")
     def runWeb(self):
         self.app.run(self.host, self.port)
 
