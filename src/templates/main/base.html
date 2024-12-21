@@ -18,47 +18,43 @@
         {% block addBodyS %}
         {% endblock %}
         <div class="bg" id="mainContents">
-            <nav class="navbar bg-body-tertiary mb-2">
+            <nav class="navbar bg-body-tertiary">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="."><h1>Do you love?</h1></a>
-                    <ul class="navbar-nav">
-                        <div class="d-flex">
-                            <li class="nav-item me-2">
-                                <button class="nav-link" aria-current="page" onclick="window.location.href = 'valorant';">Valorant部</button>
-                            </li>
-                            <li class="nav-item me-2">
-                                <button class="nav-link" aria-current="page" onclick="window.location.href = 'qBlog/';">QBlog</button>
-                            </li>
-                            <li class="nav-item me-2">
-                                <button class="nav-link" aria-current="page" onclick="window.location.href = 'chatButUnknow/';">ChatButUnknow</button>
-                            </li>
-                        </div>
-                    </ul>
+                    <div class="d-flex">
+                        <h3>Yapngie</h3>
+                    </div>
                 </div>
             </nav>
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col border border-start-0 border-top-0 border-bottom-0">
-                        <h4>リンク達</h4>
+                    <div class="col border border-start-0 border-top-0 border-bottom-0 bg-body-tertiary">
+                        <p class="mb-2"></p>
+                        <h3>リンク達</h3>
                         <hr>
                         <ul class="list-unstyled">
                             <h5 class="mt-2">作ったやつ</h5>
                             <li>
-                                <button class="btn btn-outline-info btn-lg" aria-current="page" onclick="window.location.href = 'qBlog/';">QBlog</button>
+                                <a href="qBlog/" class="link-underline-opacity-0 link-body-emphasis">QBlog</a>
                             </li>
                             <li>
-                                <button class="btn btn-outline-info btn-lg" aria-current="page" onclick="window.location.href = 'chatButUnknow/';">Chat but Unknow</button>
+                                <a href="chatButUnknow/" class="link-underline-opacity-0 link-body-emphasis">Chat but Unknow</a>
                             </li>
                             <li>
-                                <button class="btn btn-outline-info btn-lg" aria-current="page" onclick="window.location.href = 'youCantStopSanpo/';">You cant stop Sanpo</button>
+                                <a href="youCantStopSanpo/" class="link-underline-opacity-0 link-body-emphasis">You cant stop Sanpo</a>
                             </li>
                             <h5 class="mt-2">部達</h5>
                             <li>
-                                <button class="btn btn-outline-info btn-lg" aria-current="page" onclick="window.location.href = 'valorant';">Valorant</button>
+                                <a href="valorant" class="link-underline-opacity-0 link-body-emphasis">Valorant</a>
+                            </li>
+                            <h5 class="mt-2">SNS</h5>
+                            <li>
+                                <a href="https://www.youtube.com/@DYL-n2n" class="link-underline-opacity-0 link-body-emphasis">Youtube</a>
                             </li>
                         </ul>
+                        <p>※うちのサイトはリンクフリーだよ</p>
                     </div>
-                    <div class="col-9">
+                    <div class="col-10 mt-2">
                         {% block body %}
                         {% endblock %}
                     </div>
