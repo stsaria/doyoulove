@@ -1,0 +1,128 @@
+{% extends "minecraftRecommended/base.html" %}
+{% block title %}
+<title>マイクラ鯖のすゝめ - 基本的な作り方</title>
+{% endblock %}
+{% block body %}
+<h3>どのサーバーを入れるときにも通る道</h3>
+<ul>
+    <li>
+        <h4>マイクラサーバーを動かす下準備</h4>
+        <ul>
+            <li>
+                <h5>マイクラ用のアカウントを作成する</h5>
+                <p>権限を整理するために、マイクラ用のユーザーを作成する。</p>
+                <pre>useradd -m minecraft
+sudo su minecraft</pre>
+            </li>
+            <li>
+                <h5>インストール場所を決める</h5>
+                <p>一時的ではなくサーバーとして動かすのであれば、インストール場所は適切に邪魔にならない場所に置く。あと、その下にもディレクトリを作成し、名前もできるだけ適切に設定する。</p>
+                <pre>pwd
+-> /home/minecraft
+mkdir mainServer
+cd mainServer</pre>
+            </li>
+            <li>
+                <h5>Javaを入れる</h5>
+                <p>最近人気なAmazon Correttoを入れても良さそう。（もちろんoracleでもいい）以下のコマンドはjdkを入れている。探すのが下手なのかjreは見つからなかった。<br>
+                マイクラサーバー最新版(1.21.4)はjava21を利用する。しかし、実際には他のバージョンのJavaが必要になることがあると思う、その場合は必要なJavaのバージョンを調べて、<a href="https://aws.amazon.com/jp/corretto/">ここ</a>から探す。</a></p>
+                <pre>curl -LO https://corretto.aws/downloads/latest/amazon-corretto-21-x64-linux-jdk.deb
+sudo dpkg -i amazon-corretto-21-x64-linux-jdk.deb
+rm amazon-corretto-21-x64-linux-jdk.deb</pre>
+            </li>
+            <li>
+                <h5>ポートが衝突しないかの確認</h5>
+                <p>確認にはlsofを使用する。マイクラのポートはデフォルトは25565</p>
+                <pre>sudo lsof -i:25565
+-> </pre>
+                <p>動かしているプログラムが表示されないのであればOK</p>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <h4>マイクラサーバーを導入する</h4>
+        <ul>
+            <li>
+                <h5>導入するマイクラサーバーを選ぶ</h5>
+                <p>MODは置いておいて、マイクラサーバーにはプラグインという追加プログラムを入れることができる。（プラグインはサーバー内で完結する）<br>
+                基本的にサーバーとして動かすには、プラグインが必要になることが多い。/p>
+                <p>しかし、マイクラ公式で作成されているサーバーでは、そもそもプラグインの受け口がない。なので、プラグイン対応サーバーを利用する。<br>
+                基本的にpaperがおすすめ。元はspigot(その元はbukkit)というサーバーだったが、軽量化と、追加apiなどで人気だから。</p>
+                <p>paperは<a href="https://papermc.io/downloads/paper">ここ</a>からダウンロードアドレスを取得する。</p>
+            </li>
+            <li>
+                <h5>マイクラサーバーをダウンロード</h5>
+                <p>さっき選んだマイクラサーバーをダウンロードする。（spigotなどはbuildtoolsでビルドする必要があるけど、paperはbuild済みが配布されている）<br>
+                それと、さっき決めたインストール場所にいるかどうかを確認する。</p>
+                <pre>pwd
+-> /home/minecraft/mainServer
+curl -Lo paper-1.21.4.jar https://api.papermc.io/v2/projects/paper/versions/1.21.4/builds/15/downloads/paper-1.21.4-15.jar</pre>
+            </li>
+            <li>
+                <h5>EULAに同意する</h5>
+                <p>もちろん、マイクラサーバーにはEULA(利用規約)がついているので、それを読んで同意する。同意したことを明記するには、eula.txtを作成し、そこにeula=trueを記述する。</p>
+                <pre>echo "eula=true" > eula.txt</pre>
+            </li>
+            <li>
+                <h5>テストで起動</h5>
+                <p>せっかちな自分はよくやってしまうけど、いきなりsystemdの設定をしても動かないかもしれないので、テストで起動する。テストだけど、ここで遊びすぎてしまうのもあるある。<br>
+                nogui引数がないとGUIを起動しようとするが、CUI環境の場合は実行できなく、エラーが出て落ちる。GUIなんていらない！だからnogui引数をつける。</p>
+                <pre>java -jar paper-1.21.4.jar nogui</pre>
+            </li>
+            <li>
+                <h5>systemdに登録</h5>
+                <p>systemdというプログラムを管理しているプログラムがlinuxには大体ついている。これに登録することで、起動時にプログラムを実行したり、パスを指定せずにsystemctlコマンドで実行・停止・再起動ができる。</p>
+                <p>/etc/systemd/systemの中に.service拡張子で記述する。</p>
+                <pre>sudo vim /etc/systemd/system/minecraftMainServer.service</pre>
+                <pre>[Unit]
+Description=A Minecraft Server
+After=network.target
+
+[Service]
+WorkingDirectory=/home/minecraft/mainServer
+
+User=minecraft
+
+ExecStart=/usr/bin/java -jar paper-1.21.4.jar nogui
+
+[Install]
+WantedBy=multi-user.target</pre>
+                <p>実際にsystemctlコマンドで読み込み・実行・起動時実行設定をしてみる。</p>
+                <pre>sudo systemctl daemon-reload
+sudo systemctl start minecraftMainServer
+sudo systemctl enable minecraftMainServer</pre>
+                <p>ちなみに、statusモードで実行すると、実行状況を見れる。</p>
+                <pre>sudo systemctl status minecraftMainServer
+-> ● minecraftMainServer.service - A Minecraft Server
+->     Loaded: loaded (/etc/systemd/system/minecraftMainServer.service; enabled; preset: disabled)
+->     Active: active (running) since Sun 2024-12-22 22:25:38 JST; 11s ago
+-> Invocation: e9d7ecb94c5747e1ae9070d495033525
+->     Main PID: 401240 (java)
+->         Tasks: 33 (limit: 8983)
+->     Memory: 667.6M (peak: 668.2M)
+->         CPU: 24.134s
+->     CGroup: /system.slice/minecraftMainServer.service
+->             └─401240 /usr/bin/java -jar paper-1.21.4.jar nogui
+-> 
+-> Dec 22 22:25:38 tanrorient systemd[1]: Started minecraftMainServer.service - A Minecraft Server.</pre>
+            </li>
+            <li>
+                <h5>ログを見る方法</h5>
+                <p>journalctlを使用してリアルタイムのログを見る</p>
+                <pre>journalctl -u minecraftMainServer
+-> Dec 22 22:25:38 tanrorient systemd[1]: Started minecraftMainServer.service - A Minecraft Server.
+-> Dec 22 22:25:39 tanrorient java[401240]: Starting org.bukkit.craftbukkit.Main
+-> Dec 22 22:25:39 tanrorient java[401240]: *** Warning, you've not updated in a while! ***
+-> Dec 22 22:25:39 tanrorient java[401240]: *** Please download a new build as per instructions from https://papermc.io/downloads/paper ***
+-> Dec 22 22:25:40 tanrorient java[401240]: 2024-12-22T13:25:40.119770578Z ServerMain WARN Advanced terminal features are not available in th>
+-> Dec 22 22:25:40 tanrorient java[401240]: [22:25:40 INFO]: [bootstrap] Running Java 21 (OpenJDK 64-Bit Server VM 21.0.5+11-LTS; Amazon.com >
+-> Dec 22 22:25:40 tanrorient java[401240]: [22:25:40 INFO]: [bootstrap] Loading Paper 1.21.4-15-master@bb76819 (2024-12-15T09:48:21Z) for Mi>
+-> Dec 22 22:25:43 tanrorient java[401240]: [22:25:43 INFO]: [PluginInitializerManager] Initializing plugins...
+-> Dec 22 22:25:43 tanrorient java[401240]: [22:25:43 INFO]: [PluginInitializerManager] Initialized 0 plugins
+-> Dec 22 22:25:49 tanrorient java[401240]: [22:25:49 INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesH>
+-> Dec 22 22:25:49 tanrorient java[401240]: [22:25:49 INFO]: Found new data pack file/bukkit, loading it automatically</pre>
+            </li>
+        </ul>
+    </li>
+</ul>
+{% endblock %}

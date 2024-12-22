@@ -1,5 +1,5 @@
-import threading, ipaddress, requests, hashlib, random, time, sys, os
-from flask import Flask, render_template, request, redirect, url_for
+import threading, ipaddress, requests, hashlib, random, time, sys, re, os
+from flask import Flask, render_template, request, redirect, url_for, abort
 from concurrent.futures import ThreadPoolExecutor
 
 os.makedirs("dbs", exist_ok=True)
@@ -148,6 +148,23 @@ class Web:
     @app.route("/youCantStopSanpo/")
     def youCantStopSanpo():
         return render_template("youCantStopSanpo/index.html")
+    # minecraftRecommended
+    @app.route("/minecraftRecommended/")
+    def minecraftRecommended():
+        return render_template("minecraftRecommended/index.html")
+    @app.route("/minecraftRecommended/<string:page>")
+    def minecraftRecommendedEtc(page:str):
+        path = "minecraftRecommended/"
+        page = page.replace(".", "")
+        if page == "":
+            path += "index.html"
+        elif not re.match(r'^[a-zA-Z0-9_-]+$', page):
+            abort(400)
+        elif not os.path.exists(f"src/templates/{path}{page}.html"):
+            abort(404)
+        else:
+            path += f"{page}.html"
+        return render_template(path)
     def runWeb(self):
         self.app.run(self.host, self.port)
 

@@ -15,23 +15,60 @@
         {% endblock %}
     </head>
     <body>
-        {% block addBody %}
+        {% block addBodyS %}
         {% endblock %}
         <div class="bg" id="mainContents">
-            <nav class="navbar bg-body-tertiary mb-2">
+            <nav class="navbar bg-body-tertiary">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="."><h1>You cant stop Sanpo</h1></a>
-                    <h3>Good Kanto Sanpo spot</h3>
-                    <ul class="navbar-nav d-flex">
-                        <li class="nav-item">
-                            <button class="nav-link" aria-current="page" onclick="window.location.href = '../';">DYL home</button>
-                        </li>
-                    </ul>
+                    <div class="d-flex">
+                        <h3>Yapngie</h3>
+                    </div>
                 </div>
             </nav>
-            {% block body %}
-            {% endblock %}
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col border border-start-0 border-top-0 border-bottom-0 bg-body-tertiary">
+                        <p class="mb-2"></p>
+                        <h3>リンク達</h3>
+                        <hr>
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="/" class="link-underline-opacity-0 link-body-emphasis">Index</a>
+                            </li>
+                            <h5 class="mt-2">作ったやつ</h5>
+                            <li>
+                                <a href="/qBlog/" class="link-underline-opacity-0 link-body-emphasis">QBlog</a>
+                            </li>
+                            <li>
+                                <a href="/chatButUnknow/" class="link-underline-opacity-0 link-body-emphasis">Chat but Unknow</a>
+                            </li>
+                            <li>
+                                <a href="/youCantStopSanpo/" class="link-underline-opacity-0 link-body-emphasis">You cant stop Sanpo</a>
+                            </li>
+                            <li>
+                                <a href="/minecraftRecommended/" class="link-underline-opacity-0 link-body-emphasis">マイクラ鯖立てのすゝめ</a>
+                            </li>
+                            <h5 class="mt-2">部達</h5>
+                            <li>
+                                <a href="/valorant" class="link-underline-opacity-0 link-body-emphasis">Valorant</a>
+                            </li>
+                            <h5 class="mt-2">SNS</h5>
+                            <li>
+                                <a href="https://www.youtube.com/@DYL-n2n" class="link-underline-opacity-0 link-body-emphasis">Youtube</a>
+                            </li>
+                        </ul>
+                        <p>※うちのサイトはリンクフリーだよ</p>
+                    </div>
+                    <div class="col-10 mt-2">
+                        {% block body %}
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
         </div>
+        {% block addBodyE %}
+        {% endblock %}
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
         </div>
