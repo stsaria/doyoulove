@@ -1,0 +1,59 @@
+{% extends "minecraftRecommended/base.html" %}
+{% block title %}
+<title>マイクラ鯖のすゝめ - Motdの設定について</title>
+{% endblock %}
+{% block body %}
+<h3>Motdの設定について</h3>
+<ul>
+    <li>
+        <h4>Motd(Message of the day)とは？</h4>
+        <p>マイクラサーバーはアドレスだけではサーバーがどんなものかがわかりません。そんな説明の役割を果たすのがMotdです。本来のMotdはUnixなどのコンソールシステムのウェルカムメッセージで、接続した後（直後）に表示されますが、マイクラの場合は接続する前（正確に言えば後だけど）に表示される文です。<br>
+        標準では、A Minecraft serverのようになっていますが、個々を自分好みに変えることができます。</p>
+        <p>例えば、ラブ鯖ではこのようになっています。</p>
+        <img class="mb-3" src="../static/img/minecraftRecommended/motd/a.webp"></img>
+        <p>この画像の<b>je.mcjp.loveに参加！</b>の部分ですね。</p>
+        <p>BungeeCordの場合もほぼ同じですが、今回は普通のマイクラサーバーの場合を紹介します。</p>
+    </li>
+    <li>
+        <h4>Motdの設定方法</h4>
+        <ul>
+            <li>
+                <h5>最低限（英文のみ）のMotd設定</h5>
+                <p>普通のマイクラサーバーではserver.properties内のmotd項目で変更できます。</p>
+                <pre>vim server.properties</pre>
+                <p>変更前</p>
+                <pre>......
+......
+max-world-size=29999984
+motd=A Minecraft Server #ココ
+network-compression-threshold=256
+......
+......</pre>
+                <p>変更後</p>
+                <pre>......
+......
+max-world-size=29999984
+motd=Hello!!!!!!
+network-compression-threshold=256
+......
+......</pre>
+                <p>これでreloadコマンドを実行すると、反映されます。</p>
+            </li>
+            <li>
+                <h5>英文以外（日本語・色・太文字など）のMotd</h5>
+                <p>基本的に日本語は直接入力しても文字化けする仕様です（Unicode escじゃないといけない）。あと、色・太文字などもマイクラの装飾記号をつけなければいけません。<br>
+                ここでは、それらをかんたんに作成できるサイトで作ります。</p>
+                <p><a href="https://minecraft.tools/en/motd.php">Minecraft Tools(Motd)</a>を使用してみましょう。</p>
+                <p>作成できたら、それをmotd項目にコピーします。</p>
+                <pre>......
+......
+max-world-size=29999984
+motd=\u00a7b\u00a7l\u3053\u3093\u306b\u3061\u306f\u3086\u3046\u3068\u3067\u3059 \u00a72\u00a7lHello!!!!
+network-compression-threshold=256
+......
+......</pre>
+            </li>
+        </ul>
+    </li>
+</ul>
+{% endblock %}

@@ -10,7 +10,7 @@
         <ul>
             <li>
                 <h5>マイクラ用のアカウントを作成する</h5>
-                <p>権限を整理するために、マイクラ用のユーザーを作成する。</p>
+                <p>権限を整理するために、マイクラ用のユーザーを作成します。</p>
                 <pre>sudo useradd -m minecraft
 sudo su minecraft
 whoami
@@ -18,7 +18,7 @@ whoami
             </li>
             <li>
                 <h5>インストール場所を決める</h5>
-                <p>一時的ではなくサーバーとして動かすのであれば、インストール場所は適切に邪魔にならない場所に置く。あと、その下にもディレクトリを作成し、名前もできるだけ適切に設定する。</p>
+                <p>一時的ではなくサーバーとして動かすのであれば、インストール場所は適切に邪魔にならない場所に置きましょう。あと、その下にもディレクトリを作成し、名前もできるだけ適切に設定しましょう（もちろん名前は使用用途で分けましょう）。</p>
                 <pre>pwd
 -> /home/minecraft
 mkdir mainServer
@@ -26,8 +26,8 @@ cd mainServer</pre>
             </li>
             <li>
                 <h5>Javaを入れる</h5>
-                <p>最近人気なAmazon Correttoを入れても良さそう。（もちろんoracleでもいい）以下のコマンドはjdkを入れている。探すのが下手なのかjreは見つからなかった。<br>
-                マイクラサーバー最新版(1.21.4)はjava21を利用する。しかし、実際には他のバージョンのJavaが必要になることがあると思う、その場合は必要なJavaのバージョンを調べて、<a href="https://aws.amazon.com/jp/corretto/">ここ</a>から探す。</a></p>
+                <p>最近人気なAmazon Correttoを入れても良さそう。（もちろんoracleでもいい）以下のコマンドではjdkを入れています。探すのが下手なのかjreは見つかりませんでした。<br>
+                マイクラサーバー最新版(1.21.4)はjava21を利用します。ですが、実際には他のバージョンのJavaが必要になることがあると思うので、その場合は必要なJavaのバージョンを調べて、<a href="https://aws.amazon.com/jp/corretto/">ここ</a>から探しましょう。</a></p>
                 <pre>curl -LO https://corretto.aws/downloads/latest/amazon-corretto-21-x64-linux-jdk.deb
 sudo dpkg -i amazon-corretto-21-x64-linux-jdk.deb
 rm amazon-corretto-21-x64-linux-jdk.deb</pre>
@@ -46,35 +46,36 @@ rm amazon-corretto-21-x64-linux-jdk.deb</pre>
         <ul>
             <li>
                 <h5>導入するマイクラサーバーを選ぶ</h5>
-                <p>MODは置いておいて、マイクラサーバーにはプラグインという追加プログラムを入れることができる。（プラグインはサーバー内で完結する）<br>
-                基本的にサーバーとして動かすには、プラグインが必要になることが多い。/p>
-                <p>しかし、マイクラ公式で作成されているサーバーでは、そもそもプラグインの受け口がない。なので、プラグイン対応サーバーを利用する。<br>
-                基本的にpaperがおすすめ。元はspigot(その元はbukkit)というサーバーだったが、軽量化と、追加apiなどで人気だから。</p>
-                <p>paperは<a href="https://papermc.io/downloads/paper">ここ</a>からダウンロードアドレスを取得する。</p>
+                <p>MODは置いておきますが、マイクラサーバーにはプラグインという追加プログラムを入れることができます。（プラグインはサーバー内で完結する）<br>
+                そして、基本的にサーバーとして動かすには、プラグインが必要になることが多いです。</p>
+                <p>しかし、マイクラ公式で作成されているサーバーでは、そもそもプラグインの受け口がないのですね。なので、プラグイン対応サーバーを利用します。<br>
+                基本的にpaperがおすすめだと思います。元はspigot(その元はbukkit)というサーバーだったのですが、軽量化と、追加apiなどで最近人気になり始めたからです。</p>
+                <p>paperは<a href="https://papermc.io/downloads/paper">ここ</a>からダウンロードアドレスを取得できます。</p>
             </li>
             <li>
                 <h5>マイクラサーバーをダウンロード</h5>
-                <p>さっき選んだマイクラサーバーをダウンロードする。（spigotなどはbuildtoolsでビルドする必要があるけど、paperはbuild済みが配布されている）<br>
-                それと、さっき決めたインストール場所にいるかどうかを確認する。</p>
+                <p>さっき選んだマイクラサーバーをダウンロードします。（spigotなどはbuildtoolsでビルドする必要があるけど、paperはbuild済みが配布されている）<br>
+                それと、さっき決めたインストール場所にいるかどうかを確認しましょう。</p>
                 <pre>pwd
 -> /home/minecraft/mainServer
 curl -Lo paper-1.21.4.jar https://api.papermc.io/v2/projects/paper/versions/1.21.4/builds/15/downloads/paper-1.21.4-15.jar</pre>
             </li>
             <li>
                 <h5>EULAに同意する</h5>
-                <p>もちろん、マイクラサーバーにはEULA(利用規約)がついているので、それを読んで同意する。同意したことを明記するには、eula.txtを作成し、そこにeula=trueを記述する。</p>
+                <p>もちろん、マイクラサーバーにはEULA(利用規約)がついているので、それを読んで同意することが必要です。同意したことを明記するには、eula.txtを作成し、そこにeula=trueを記述します。</p>
                 <pre>echo "eula=true" > eula.txt</pre>
             </li>
             <li>
                 <h5>テストで起動</h5>
-                <p>せっかちな自分はよくやってしまうけど、いきなりsystemdの設定をしても動かないかもしれないので、テストで起動する。テストだけど、ここで遊びすぎてしまうのもあるある。<br>
-                nogui引数がないとGUIを起動しようとするが、CUI環境の場合は実行できなく、エラーが出て落ちる。GUIなんていらない！だからnogui引数をつける。</p>
+                <p>せっかちな自分はよくやってしまうけど、いきなりsystemdの設定をしても動かないかもしれないので、テストで起動しときましょう。テストだけど、ここで遊びすぎてしまうのもあるあるですね（笑）。<br>
+                nogui引数がないとGUIを起動しようとするのですが、CUI環境の場合は実行できなく、エラーが出て落ちます。GUIなんていらない！だからnogui引数をつけます。</p>
                 <pre>java -jar paper-1.21.4.jar nogui</pre>
             </li>
             <li>
                 <h5>systemdに登録</h5>
-                <p>systemdというプログラムを管理しているプログラムがlinuxには大体ついている。これに登録することで、起動時にプログラムを実行したり、パスを指定せずにsystemctlコマンドで実行・停止・再起動ができる。</p>
-                <p>/etc/systemd/systemの中に.service拡張子で記述する。</p>
+                <p>systemdというプログラムを管理しているプログラムがlinuxには大体ついています（少なくとも最新版のUbuntuには）。これに登録することで、起動時にプログラムを実行したり、パスを指定せずにsystemctlコマンドで実行・停止・再起動ができます。</p>
+                <p>/etc/systemd/systemの中に.service拡張子で記述しましょう。<br>
+                あ、あと、-Xmx2G -Xmx2G のようにJavaVMのメモリ設定ができます。人数にもよりますが、基本的に割り当てられる中なのであれば最大割り当てて大丈夫だと思います。</p>
                 <pre>sudo vim /etc/systemd/system/minecraftMainServer.service</pre>
                 <pre>[Unit]
 Description=A Minecraft Server
@@ -85,15 +86,15 @@ WorkingDirectory=/home/minecraft/mainServer
 
 User=minecraft
 
-ExecStart=/usr/bin/java -jar paper-1.21.4.jar nogui
+ExecStart=/usr/bin/java -Xmx2G -Xmx2G -jar paper-1.21.4.jar nogui
 
 [Install]
 WantedBy=multi-user.target</pre>
-                <p>実際にsystemctlコマンドで読み込み・実行・起動時実行設定をしてみる。</p>
+                <p>実際にsystemctlコマンドで読み込み・実行・起動時実行設定をしてみます。</p>
                 <pre>sudo systemctl daemon-reload
 sudo systemctl start minecraftMainServer
 sudo systemctl enable minecraftMainServer</pre>
-                <p>ちなみに、statusモードで実行すると、実行状況を見れる。</p>
+                <p>ちなみに、statusモードで実行すると、実行状況を見れます。</p>
                 <pre>sudo systemctl status minecraftMainServer
 -> ● minecraftMainServer.service - A Minecraft Server
 ->     Loaded: loaded (/etc/systemd/system/minecraftMainServer.service; enabled; preset: disabled)
@@ -110,7 +111,7 @@ sudo systemctl enable minecraftMainServer</pre>
             </li>
             <li>
                 <h5>ログを見る方法</h5>
-                <p>journalctlを使用してリアルタイムのログを見る</p>
+                <p>journalctlを使用してリアルタイムのログを見ましょう。</p>
                 <pre>journalctl -u minecraftMainServer
 -> Dec 22 22:25:38 tanrorient systemd[1]: Started minecraftMainServer.service - A Minecraft Server.
 -> Dec 22 22:25:39 tanrorient java[401240]: Starting org.bukkit.craftbukkit.Main

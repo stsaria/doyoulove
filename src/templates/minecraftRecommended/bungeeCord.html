@@ -1,0 +1,179 @@
+{% extends "minecraftRecommended/base.html" %}
+{% block title %}
+<title>マイクラ鯖のすゝめ - BungeeCordの導入</title>
+{% endblock %}
+{% block body %}
+<h3>BungeeCordの導入</h3>
+<p>BungeeCordは参加側からは一つのIPとして動くけど、サーバー側では一つ一つサーバーを分けれるようなソフトウェアです。<br>
+BungeeCordは基本的には以下の図のような構成で動かされる場合が多いです。</p>
+<img class="mb-3" src="../static/img/minecraftRecommended/bungeeCord/a.png"></img>
+<ul>
+    <li>
+        <h4>マイクラサーバーを動かす下準備</h4>
+        <ul>
+            <li>
+                <h5>今のサーバー設定に手を加える</h5>
+                <ul>
+                    <li>
+                        <h6>サーバーのポートを変更する</h6>
+                        <p>もし、あなたがBungeeCordを導入するサーバーとPaperなどが入っているサーバーを分けるのであれば気にしなくていいですが、おそらく、あなたは同じコンピューター上でPaperとBungeeを動かすことになると思います。なのであれば、今のままではポートの衝突が発生します。<br>
+                        マインクラフトのデフォルトポートが25565なのでBungeeCordもPaperも25565に設定してしまうと、どちらかがサーバーを立ち上げれなくなります。</p>
+                        <p>なので、<b>個々のサーバーだけ</b>25566とかのポートに変えておいて、BungeeCordは25565にすることによって解決できます。</p>
+                        <img class="mb-3" src="../static/img/minecraftRecommended/bungeeCord/b.png"></img>
+                        <p>サーバーのポート変更はserver.propertiesの中の25565部分を置き換えることで変更できます。今回は25566に変更しようと思います（lsofでポートを確認しておいた上で）。</p>
+                        <pre>pwd
+-> /home/minecraft/mainServer
+vim server.properties</pre>
+                        <pre>:%s/25565/25566</pre>
+                    </li>
+                    <li>
+                        <h6>BungeeCordに対応した設定に変更する</h6>
+                        <p>このままだとBungeeCordにこのサーバーのIPを設定しても、接続できません。なぜかというと、Minecraftの認証システムがあるのですが、それがBungeeCord側にもついていて二重に認証しようとするところで失敗するのです（もちろん他の理由もあります）。<br>
+                        なので、その認証を<b>個々のサーバーだけ</b>外します。</p>
+                        <p>まずserver.propertiesの中の設定を変更します。online-modeという項目をfalse(オフ)にします。</p>
+                        <pre>vim server.properties</pre>
+                        <pre>:%s/online-mode=true/online-mode=false</pre>
+                        <p>また、前回でPaperを入れたことでspigot.ymlの変更も必要です。これはプラグインなどが正常に動くようになるためです。bungeecordという項目をtrue(オン)にします（空白が入っているので注意）。</p>
+                        <pre>vim spigot.yml</pre>
+                        <pre>:%s/bungeecord: false/bungeecord: true</pre>
+                    </li>
+                    <li>
+                        <h6>設定を反映</h6>
+                        <p>設定を反映するためにサーバーの再起動を行います。</p>
+                        <pre>sudo systemctl restart minecraftMainServer</pre>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <h5>BungeeCordのインストール位置設定</h5>
+                <p>これは前と同じですが、書いておきます。</p>
+                <pre>cd ~
+pwd
+-> /home/minecraft
+mkdir bungeeCordServer
+cd bungeeCordServer</pre>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <h4>BungeeCordを導入する</h4>
+        <ul>
+            <li>
+                <h5>BungeeCordをダウンロード</h5>
+                <p>BungeeCordの<a href="https://ci.md-5.net/job/BungeeCord/">ダウンロードページ</a>からBungeeCord.jarをダンロードします。</p>
+                <pre>pwd
+-> /home/minecraft/bungeeCord
+curl -Lo bungeeCord.jar https://ci.md-5.net/job/BungeeCord/lastSuccessfulBuild/artifact/bootstrap/target/BungeeCord.jar</pre>
+            </li>
+            <li>
+                <h5>テストで起動</h5>
+                <p>まだ設定とかはしていないですが、とりあえず起動してみます。bungeeCordにはデフォルトでGUIがありません。</p>
+                <pre>java -jar bungeeCord.jar</pre>
+                <p>止まらずにListening on ....のように表示されたら正常です。</p>
+            </li>
+            <li>
+                <h5>BungeeCordの設定</h5>
+                <p>BungeeCordの設定ファイルはconfig.ymlです。</p>
+                <pre>vim config.yml</pre>
+                <ul>
+                    <li>
+                        <h6>BungeeCordのポートを変更</h6>
+                        <p>BungeeCordは25577がデフォルトポートなのですが、これだとプレイヤー側からの接続でポートを入力しないといけないので、25565(デフォルトポート)に変更します。</p>
+                        <pre>:%s/25577/25565</pre>
+                    </li>
+                    <li>
+                        <h6>Paperなどのサーバーを登録する</h6>
+                        <p>サーバーはservers項目の中にあります。初期ではlobbyがあるはずです。このlobbyがサーバー名です（サーバー移動時に選択するための名前）。<br>
+                        このlobbyを変更していきましょう。</p>
+                        <pre>servers:
+  lobby:
+    motd: '&1Just another BungeeCord - Forced Host'
+    address: localhost:25565
+    restricted: false</pre>
+                        <p>address項目はさっき変更した（Paper）のポートに変えましょう。restrictedは権限持ちだけ移動できるモードですが、とりあえずfalseのままで大丈夫です。<br>
+                        motdはサーバー説明文ですが、プレイヤー側には見えないのでとりあえず変更しなくていいです。</p>
+                        <pre>servers:
+  lobby:
+    motd: '&1Just another BungeeCord - Forced Host'
+    address: localhost:25566
+    restricted: false</pre>
+                    </li>
+                    <li>
+                        <h6>BungeeCord自体の設定</h6>
+                        <p>BungeeCord自体の設定項目はlistenersです。listenersは今までの変更でこのようになっているはずです。</p>
+                        <pre>listeners:
+  - query_port: 25565
+  motd: '&1Another Bungee server'
+  tab_list: GLOBAL_PING
+  query_enabled: false
+  proxy_protocol: false
+  forced_hosts:
+    pvp.md-5.net: pvp
+  ping_passthrough: false
+  priorities:
+  - lobby
+  bind_local_address: true
+  host: 0.0.0.0:25565
+  max_players: 1
+  tab_size: 60
+  force_default_server: false</pre>
+                        <p>ここのmotdはプレイヤーに見えるものです。とりあえず今のままでいいですが、いずれは変えましょう。詳しくはすゝめのmotdの設定を参照してください。<br>
+                        max_playerはが1ではサーバーに1人しか入れないので、とりあえず20とかにしておきます。</p>
+                        <p>変更後の設定です。</p>
+                        <pre>listeners:
+  - query_port: 25565
+  motd: 'Hello, Obasan'
+  tab_list: GLOBAL_PING
+  query_enabled: false
+  proxy_protocol: false
+  forced_hosts:
+    pvp.md-5.net: pvp
+  ping_passthrough: false
+  priorities:
+  - lobby
+  bind_local_address: true
+  host: 0.0.0.0:25565
+  max_players: 20
+  tab_size: 60
+  force_default_server: false</pre>
+                        <p>ちなみに、この設定の一個下にip_foaward項目があるのですが、spigot系（Paperも含まれる）の場合はtrueに変更します。</p>
+                        <pre>:%s/ip_forward: false/ip_forward: true</pre>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <h5>systemdに登録</h5>
+                <p>これも前書きましたが、一応書いておきます。</p>
+                <pre>sudo vim /etc/systemd/system/minecraftBungeeCordServer.service</pre>
+                <pre>[Unit]
+Description=A BungeeCord Proxy Server
+After=network.target
+
+[Service]
+WorkingDirectory=/home/minecraft/bungeeCord
+
+User=minecraft
+
+ExecStart=/usr/bin/java -jar bungeeCord.jar nogui
+
+[Install]
+WantedBy=multi-user.target</pre>
+                <p>実行とか諸々</p>
+                <pre>sudo systemctl daemon-reload
+sudo systemctl start minecraftBungeeCordServer
+sudo systemctl enable minecraftBungeeCordServer
+sudo systemctl status minecraftMainServer
+-> ● minecraftBungeeCordServer.service - A BungeeCord Proxy Server
+->     Loaded: loaded (/etc/systemd/system/minecraftBungeeCordServer.service; enabled; preset: disabled)
+->     Active: active (running) since Mon 2024-12-30 12:48:38 JST; 3s ago
+-> Invocation: bb9e9f783608420f93b0fee5044f0410
+->     Main PID: 389285 (java)
+->         Tasks: 33 (limit: 8983)
+->     Memory: 88.4M (peak: 89.1M)
+->         CPU: 4.408s
+->     CGroup: /system.slice/minecraftBungeeCordServer.service</pre>
+            </li>
+        </ul>
+    </li>
+</ul>
+{% endblock %}
