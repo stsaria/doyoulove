@@ -62,7 +62,7 @@ cd bungeeCordServer</pre>
                 <h5>BungeeCordをダウンロード</h5>
                 <p>BungeeCordの<a href="https://ci.md-5.net/job/BungeeCord/">ダウンロードページ</a>からBungeeCord.jarをダンロードします。</p>
                 <pre>pwd
--> /home/minecraft/bungeeCord
+-> /home/minecraft/bungeeCordServer
 curl -Lo bungeeCord.jar https://ci.md-5.net/job/BungeeCord/lastSuccessfulBuild/artifact/bootstrap/target/BungeeCord.jar</pre>
             </li>
             <li>
@@ -150,7 +150,7 @@ Description=A BungeeCord Proxy Server
 After=network.target
 
 [Service]
-WorkingDirectory=/home/minecraft/bungeeCord
+WorkingDirectory=/home/minecraft/bungeeCordServer
 
 User=minecraft
 

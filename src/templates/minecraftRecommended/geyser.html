@@ -1,0 +1,90 @@
+{% extends "minecraftRecommended/base.html" %}
+{% block title %}
+<title>マイクラ鯖のすゝめ - 統合版も入れるようにするプラグインGeyserMCを入れる</title>
+{% endblock %}
+{% block body %}
+<h3>統合版も入れるようにするプラグインGeyserMCを入れる</h3>
+<p class="text-warning">※今回紹介するインストール方法はSpigotとBungeeCordのどっちにも共通する設定です。コマンドなどはそれに合わせて変更してください。</p>
+<ul>
+    <li>
+        <h4>GeyserMCとは？</h4>
+        <p>マイクラは3つバージョンがあります。Java版とBedrock版とコンソール版です。現在ではコンソール版はほとんど使われていません。過去にWiiUなどで出ましたが、ほとんどがBedrock版に移行しました。<br>
+        ここで問題なのですが、もちろんJava版のサーバーを立てたらJava版は入れますが、Bedrock版も入れるように共存できないのです。理由は単純で、通信方式も内容のフォーマットも異なるからです。</p>
+        <p>ただ、Java版とBedrock版で半分ぐらいに分かれてしまうコミュニティなども存在することから、共存できるようなプラグインが開発されました。それがGeyserMCなのです。</p>
+        <p>GeyserMCはSpigotとBungeeCordに対応しています（他にもある）。なので、今回はSpigotとBungeeCordの2つの導入方法を解説します。</p>
+    </li>
+    <li>
+        <h4>GeyserとFloodgateの存在</h4>
+        <p>GeyserはJava版とBedrock版の仲介でしかありません。それだけではオンラインモードが使用できません。サーバー自体はJava版のアカウントのみを受け付けるからです。オンラインモードが使用できないということは、スキンなどの機能が使用できません。<br>
+        流石にそれだと困るので、Floodgateというプラグインが存在します。FloodgateはBedrock版のアカウントも受け付けるようにするものです。これを利用することによって統合版でもオンラインモードが使用できます。</p>
+        <p>※どっちもGeyserMCプロジェクトで作成されたプラグインです。</p>
+    </li>
+    <li>
+        <h4>インストール方法</h4>
+        <ul>
+            <li>
+                <h5>ダウンロードする</h5>
+                <p>GeyserMCの<a href="https://geysermc.org/download/">ダウンロードページ</a>からGeyserとFloodgateのダウンロードURLを取得します（自分が使用しているサーバーのボタンから）。</p>
+                <p>pluginsディレクトリに移動して、ダウンロードコマンドを実行します。</p>
+                <pre>pwd
+-> /home/minecraft/mainServer
+cd plugins
+curl -Lo geyser.jar https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/spigot
+curl -Lo floodgate.jar https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/spigot</pre>
+            </li>
+            <li>
+                <h5>プラグインを反映</h5>
+                <p>プラグインを反映するためにサーバーの再起動を行います（spigotなどなら、reloadコマンドでも可）。</p>
+                <pre>sudo systemctl restart minecraftMainServer</pre>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <h5>必要なGeyserMCの設定</h5>
+        <ul>
+            <li>
+                <h6>auth-typeの変更（もしGeyser-****のようなディレクトリがplguinsに生成された場合）</h6>
+                <p>auth-typeはremote項目の中にある項目です。名前の通りの意味ですが、認証方式です。デフォルトではここがonlineになっていますが、これはJava版のアカウントを指します。先ほど説明したことから、これだとBedrock版は参加できません。<br>
+                なので、ここをfloodgateに変更します。そして、気持ちが悪いのですが、spigot(paper)はなぜか生成されなかったのですよね......BungeeCordでは生成されたのですが.......</p>
+                <p>変更前</p>
+                <pre>......
+......
+  # If Floodgate is installed and `address:` is set to "auto", then "auth-type: floodgate" will automatically be used.
+  auth-type: online
+  # Whether to enable PROXY protocol or not while connecting to the server.
+......
+......</pre>
+                <p>変更後</p>
+                <pre>......
+......
+  # If Floodgate is installed and `address:` is set to "auto", then "auth-type: floodgate" will automatically be used.
+  auth-type: floodgate
+  # Whether to enable PROXY protocol or not while connecting to the server.
+......
+......</pre>
+            </li>
+            <li>
+                <h6>enforce-secure-profileの無効化（1.19.1~）</h6>
+                <p>1.19.1からenforce-secure-profileという項目がserver.propertiesに追加されました。これはMojangが署名した公開鍵を持たないクライアントは接続できないという設定です。<br>
+                これがついているとBedrock版では接続できません。なので、falseにしておきます。</p>
+                <p>変更前</p>
+                <pre>......
+......
+enable-status=true
+enforce-secure-profile=true
+enforce-whitelist=false
+......
+......</pre>
+                <p>変更後</p>
+                <pre>......
+......
+enable-status=true
+enforce-secure-profile=false
+enforce-whitelist=false
+......
+......</pre>
+            </li>
+        </ul>
+    </li>
+</ul>
+{% endblock %}
