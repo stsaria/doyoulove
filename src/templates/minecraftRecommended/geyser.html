@@ -44,45 +44,18 @@ curl -Lo floodgate.jar https://download.geysermc.org/v2/projects/floodgate/versi
         <ul>
             <li>
                 <h6>auth-typeの変更（もしGeyser-****のようなディレクトリがplguinsに生成された場合）</h6>
-                <p>auth-typeはremote項目の中にある項目です。名前の通りの意味ですが、認証方式です。デフォルトではここがonlineになっていますが、これはJava版のアカウントを指します。先ほど説明したことから、これだとBedrock版は参加できません。<br>
+                <p>auth-typeはpluginsのGeyser-****のようなディレクトリのconfig.ymlのremote項目の中にある項目です。名前の通りの意味ですが、認証方式です。デフォルトではここがonlineになっていますが、これはJava版のアカウントを指します。先ほど説明したことから、これだとBedrock版は参加できません。<br>
                 なので、ここをfloodgateに変更します。そして、気持ちが悪いのですが、spigot(paper)はなぜか生成されなかったのですよね......BungeeCordでは生成されたのですが.......</p>
                 <p>変更前</p>
-                <pre>......
-......
-  # If Floodgate is installed and `address:` is set to "auto", then "auth-type: floodgate" will automatically be used.
-  auth-type: online
-  # Whether to enable PROXY protocol or not while connecting to the server.
-......
-......</pre>
-                <p>変更後</p>
-                <pre>......
-......
-  # If Floodgate is installed and `address:` is set to "auto", then "auth-type: floodgate" will automatically be used.
-  auth-type: floodgate
-  # Whether to enable PROXY protocol or not while connecting to the server.
-......
-......</pre>
+                <pre>vim plugins/Geyser-BungeeCord/config.yml</pre>
+                <pre>:%s/auth-type: online/auth-type: floodgate</pre>
             </li>
             <li>
                 <h6>enforce-secure-profileの無効化（1.19.1~）</h6>
-                <p>1.19.1からenforce-secure-profileという項目がserver.propertiesに追加されました。これはMojangが署名した公開鍵を持たないクライアントは接続できないという設定です。<br>
+                <p>1.19.1からenforce-secure-profileという項目がserver.propertiesに追加されました（BungeeCordの場合はconfig.ymlにデフォルトが無効である）。これはMojangが署名した公開鍵を持たないクライアントは接続できないという設定です。<br>
                 これがついているとBedrock版では接続できません。なので、falseにしておきます。</p>
-                <p>変更前</p>
-                <pre>......
-......
-enable-status=true
-enforce-secure-profile=true
-enforce-whitelist=false
-......
-......</pre>
-                <p>変更後</p>
-                <pre>......
-......
-enable-status=true
-enforce-secure-profile=false
-enforce-whitelist=false
-......
-......</pre>
+                <pre>vim server.properties</pre>
+                <pre>:%s/enforce-secure-profile=true/enforce-secure-profile=false</pre>
             </li>
         </ul>
     </li>

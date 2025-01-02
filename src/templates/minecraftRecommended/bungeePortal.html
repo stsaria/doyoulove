@@ -1,0 +1,74 @@
+{% extends "minecraftRecommended/base.html" %}
+{% block title %}
+<title>マイクラ鯖のすゝめ - BungeeCord内のサーバーをゲートで行き来できるようになるプラグインAdvanced Portalsを入れる</title>
+{% endblock %}
+{% block body %}
+<h3>BungeeCord内のサーバーをゲートで行き来できるようになるプラグインAdvanced Portalsを入れる</h3>
+<ul>
+    <li>
+        <h4>Advanced Portalsとは？</h4>
+        <p>Advanced Portalsは色んな所にワープできるようなゲートを作成できるプラグインです。単純なテレポートなどの機能もあれば、BungeeCordのサーバー間を移動できる機能もあります！<br>
+        今回はテレポートの機能ではなく、BungeeCordのワープ機能を導入する方法を説明します。</p>
+    </li>
+    <li>
+        <h4>今回のサーバー構成</h4>
+        <p>今回はBungeeCordの後ろにロビー・サバイバルサーバー（どっちもPaper）が動いている環境にロビーサーバーのみに導入します。BungeeCordのサーバーIDは、それぞれlobbyとsurvivalです。</p>
+        <img class="mb-3" src="../static/img/minecraftRecommended/bungeePortal/a.png"></img>
+    </li>
+    <li>
+        <h4>プラグインを導入</h4>
+        <ul>
+            <li>
+                <h5>ダウンロードする</h5>
+                <p><a href="https://modrinth.com/plugin/advanced-portals">ダウンロードページ</a>の右上の緑のボタンを押して、バージョンとサーバーを選びます（BungeeCordに導入しても意味がないプラグインなので、プロキシではないサーバーを選ぶ）。</p>
+                <p>pluginsディレクトリに移動して、ダウンロードコマンドを実行します。</p>
+                <pre>pwd
+-> /home/minecraft/lobbyServer
+cd plugins
+curl -LO https://cdn.modrinth.com/data/axTqSWQA/versions/RJivbVUI/Advanced-Portals-2.1.1.jar</pre>
+            </li>
+            <li>
+                <h5>プラグインを反映</h5>
+                <p>プラグインを反映するためにサーバーの再起動を行います（spigotなどなら、reloadコマンドでも可）。</p>
+                <pre>sudo systemctl restart minecraftLobbyServer</pre>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <h4>ゲートの作成（マイクラ内）</h4>
+        <p>これからのコマンドはすべてマイクラコマンドです。</p>
+        <p>コマンドの中に出てくるsurvivalというIDはサーバーを区別させるものなので、そこは状況次第で変えてください。</p>
+        <pre>例:/portal create name:survival desti:survival bungee:survival</pre>
+        <ul>
+            <li>
+                <h5>形を作る</h5>
+                <p>まずはポータルの形を作ります。素材・形はどのようなものでも一本で繋がっていれば問題ありません。<br>
+                そして、ポータルの角に四角になるようにブロックを置きます（写真では1と2のことです）。</p>
+                <img class="mb-3" src="../static/img/minecraftRecommended/bungeePortal/b.webp"></img>
+            </li>
+            <li>
+                <h5>ポータルを選択して位置を登録する</h5>
+                <pre>/portal selector</pre>
+                と実行して、ポータル選択専用の鉄の斧<img class="me-1" src="../static/img/minecraftRecommended/bungeePortal/c.webp" height="18px"></img>を出します。</p>
+                <p>そして、さっきのゲートの画像のような1と2をそれぞれ左と右クリックで選択して（WorldEditと同じ）、</p>
+                <pre>/destination create survival</pre>
+                <p>のように実行してポータルの範囲を登録します。</p>
+            </li>
+            <li>
+                <h5>ポータルを登録</h5>
+                <p>さっき登録したのは、ゲートの位置だけなので、ポータル自体を登録します。</p>
+                <pre>/portal create name:survival desti:survival bungee:survival</pre>
+                <p>このように実行します。nameはポータルのIDで、desti(destination)はポータルの範囲（さっき作成したID）、bungeeはBungeeCordのサーバーIDです。</p>
+            </li>
+            <li>
+                <h5>ポータルブロックを設置</h5>
+                <p>今までの設定はこの範囲に置かれたポータルブロックに触れたら指定されたところにテレポートするだけの設定なので、そのポータルブロックを設置しなければなりません。</p>
+                <pre>/portal portalblock</pre>
+                <p>と実行してポータルブロック（紫色の羊毛<img class="me-1" src="../static/img/minecraftRecommended/bungeePortal/d.webp" height="18px">）出します。このポータルブロックをゲートに置きます。<br>
+                もし、方向が違ったら、ポータルブロックを選択した状態で左クリックをすれば方向を変更できます。間違っておいてしまったら、ポータルブロック以外を選択してから左クリックすれば壊せます。</p>
+            </li>
+        </ul>
+    </li>
+    <p>これでポータルが完成しました！</p>
+</ul>
+{% endblock %}

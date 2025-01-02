@@ -9,6 +9,14 @@
         <h4>マイクラサーバーを動かす下準備</h4>
         <ul>
             <li>
+                <h5>Javaを入れる</h5>
+                <p>最近人気なAmazon Correttoを入れても良さそう。（もちろんoracleでもいい）以下のコマンドではjdkを入れています。探すのが下手なのかjreは見つかりませんでした。<br>
+                マイクラサーバー最新版(1.21.4)はjava21を利用します。ですが、実際には他のバージョンのJavaが必要になることがあると思うので、その場合は必要なJavaのバージョンを調べて、<a href="https://aws.amazon.com/jp/corretto/">ここ</a>から探しましょう。</a></p>
+                <pre>curl -LO https://corretto.aws/downloads/latest/amazon-corretto-21-x64-linux-jdk.deb
+sudo dpkg -i amazon-corretto-21-x64-linux-jdk.deb
+rm amazon-corretto-21-x64-linux-jdk.deb</pre>
+            </li>
+            <li>
                 <h5>マイクラ用のアカウントを作成する</h5>
                 <p>権限を整理するために、マイクラ用のユーザーを作成します。</p>
                 <pre>sudo useradd -m minecraft
@@ -23,14 +31,6 @@ whoami
 -> /home/minecraft
 mkdir mainServer
 cd mainServer</pre>
-            </li>
-            <li>
-                <h5>Javaを入れる</h5>
-                <p>最近人気なAmazon Correttoを入れても良さそう。（もちろんoracleでもいい）以下のコマンドではjdkを入れています。探すのが下手なのかjreは見つかりませんでした。<br>
-                マイクラサーバー最新版(1.21.4)はjava21を利用します。ですが、実際には他のバージョンのJavaが必要になることがあると思うので、その場合は必要なJavaのバージョンを調べて、<a href="https://aws.amazon.com/jp/corretto/">ここ</a>から探しましょう。</a></p>
-                <pre>curl -LO https://corretto.aws/downloads/latest/amazon-corretto-21-x64-linux-jdk.deb
-sudo dpkg -i amazon-corretto-21-x64-linux-jdk.deb
-rm amazon-corretto-21-x64-linux-jdk.deb</pre>
             </li>
             <li>
                 <h5>ポートが衝突しないかの確認</h5>
@@ -67,9 +67,9 @@ curl -Lo paper-1.21.4.jar https://api.papermc.io/v2/projects/paper/versions/1.21
             </li>
             <li>
                 <h5>テストで起動</h5>
-                <p>せっかちな自分はよくやってしまうけど、いきなりsystemdの設定をしても動かないかもしれないので、テストで起動しときましょう。テストだけど、ここで遊びすぎてしまうのもあるあるですね（笑）。<br>
+                <p>せっかちな自分はよくやってしまうけど、いきなりsystemdの設定をしても動かないかもしれないので、テストで起動しときましょう。あと、自分にop権限をつけるのを忘れないように。テストだけど、ここで遊びすぎてしまうのもあるあるですね（笑）。<br>
                 nogui引数がないとGUIを起動しようとするのですが、CUI環境の場合は実行できなく、エラーが出て落ちます。GUIなんていらない！だからnogui引数をつけます。</p>
-                <pre>java -jar paper-1.21.4.jar nogui</pre>
+                <pre>java -jar paper.jar nogui</pre>
             </li>
             <li>
                 <h5>systemdに登録</h5>
@@ -86,7 +86,7 @@ WorkingDirectory=/home/minecraft/mainServer
 
 User=minecraft
 
-ExecStart=/usr/bin/java -Xmx2G -Xmx2G -jar paper-1.21.4.jar nogui
+ExecStart=/usr/bin/java -Xmx2G -Xmx2G -jar paper.jar nogui
 
 [Install]
 WantedBy=multi-user.target</pre>
