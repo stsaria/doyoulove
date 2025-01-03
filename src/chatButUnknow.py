@@ -4,7 +4,7 @@ class StringUnknower:
     def __init__(self):
         self.unknowsSettings = {
             "probabilities":{
-                "abnormal":23,
+                "abnormal":42,
                 "allInAll":20,
             },
             "unknows":{
