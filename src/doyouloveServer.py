@@ -9,6 +9,7 @@ if not os.path.isfile("BANIPs"):
 
 from qBlog import QBlog
 from chatButUnknow import ChatButUnknow
+from githubApi import GithubAPI
 chatButUnknow = ChatButUnknow()
 qBlog = QBlog()
 
@@ -165,6 +166,12 @@ class Web:
         else:
             path += f"{page}.html"
         return render_template(path)
+    # mySoftWares
+    @app.route("/mySoftWares/getMineHuntPvPMainLatestAsset")
+    def getMineHuntPvPMainLatestAsset():
+        return redirect(GithubAPI("stsaria", "MineHuntPvPMain").getLatestReleaseAssetDownlodURLs()[0])
+    def getMineHuntPvPLobbyerLatestAsset():
+        return redirect(GithubAPI("stsaria", "MineHuntPvPLobbyer").getLatestReleaseAssetDownlodURLs()[0])
     def runWeb(self):
         self.app.run(self.host, self.port)
 
