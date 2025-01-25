@@ -170,6 +170,7 @@ class Web:
     @app.route("/mySoftWares/getMineHuntPvPMainLatestAsset")
     def getMineHuntPvPMainLatestAsset():
         return redirect(GithubAPI("stsaria", "MineHuntPvPMain").getLatestReleaseAssetDownlodURLs()[0])
+    @app.route("/mySoftWares/getMineHuntPvPLobbyerLatestAsset")
     def getMineHuntPvPLobbyerLatestAsset():
         return redirect(GithubAPI("stsaria", "MineHuntPvPLobbyer").getLatestReleaseAssetDownlodURLs()[0])
     def runWeb(self):
